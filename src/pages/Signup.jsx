@@ -9,18 +9,22 @@ import {
   MenuItem,
   Paper,
   Link,
+  IconButton,
+  InputAdornment,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const enrollmentRegex = /^(0704|0714)(CS|IT|AD)(20|21|22|23|24|25|26)(1[0-2][0-9]{2}|1300)$/;
 const mobileRegex = /^[6-9]\d{9}$/;
 
 const security_question = [
-  'What is your mother’s maiden name?',
-  'What was your first pet’s name?',
-  'What is your favorite book?',
+  'Who is your best friend?',
+  'What is your pet’s name?',
+  'What is your favorite food?',
   'What city were you born in?',
 ];
 
@@ -42,6 +46,13 @@ export default function Signup() {
   const [errors, setErrors] = useState({});
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // New states for showing/hiding passwords
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const toggleShowPassword = () => setShowPassword((show) => !show);
+  const toggleShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
 
   const validate = () => {
     const newErrors = {};
@@ -111,7 +122,7 @@ export default function Signup() {
         justifyContent: 'center',
         p: 2,
         transition: 'background 0.4s ease',
-        mt:8
+        mt: 8,
       }}
     >
       <Paper
@@ -134,22 +145,11 @@ export default function Signup() {
           transition: 'all 0.3s ease-in-out',
         }}
       >
-        <Typography
-          variant="h4"
-          align="center"
-          fontWeight={600}
-          color="primary"
-          gutterBottom
-        >
+        <Typography variant="h4" align="center" fontWeight={600} color="primary" gutterBottom>
           Create an Account
         </Typography>
 
-        <Typography
-          variant="subtitle2"
-          align="center"
-          color="text.secondary"
-          mb={2}
-        >
+        <Typography variant="subtitle2" align="center" color="text.secondary" mb={2}>
           Join and explore your personalized dashboard
         </Typography>
 
@@ -229,10 +229,11 @@ export default function Signup() {
             helperText={errors.security_answer}
           />
 
+          {/* Password Field with toggle */}
           <TextField
             label="Password"
             name="password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             value={form.password}
             onChange={handleChange}
             fullWidth
@@ -241,12 +242,26 @@ export default function Signup() {
             error={!!errors.password}
             helperText={errors.password}
             inputProps={{ minLength: 6 }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={toggleShowPassword}
+                    edge="end"
+                    aria-label="toggle password visibility"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
 
+          {/* Confirm Password Field with toggle */}
           <TextField
             label="Confirm Password"
             name="confirmPassword"
-            type="password"
+            type={showConfirmPassword ? 'text' : 'password'}
             value={form.confirmPassword}
             onChange={handleChange}
             fullWidth
@@ -255,6 +270,19 @@ export default function Signup() {
             error={!!errors.confirmPassword}
             helperText={errors.confirmPassword}
             inputProps={{ minLength: 6 }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={toggleShowConfirmPassword}
+                    edge="end"
+                    aria-label="toggle confirm password visibility"
+                  >
+                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
 
           <Button
@@ -268,12 +296,7 @@ export default function Signup() {
             {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign Up'}
           </Button>
 
-          <Box
-            mt={2}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
+          <Box mt={2} display="flex" justifyContent="center" alignItems="center">
             <Typography variant="body2" color="text.secondary" mr={1}>
               Already have an account?
             </Typography>

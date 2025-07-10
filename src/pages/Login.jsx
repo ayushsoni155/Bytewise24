@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -8,10 +8,14 @@ import {
   CircularProgress,
   Paper,
   Link,
+  IconButton,
+  InputAdornment,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const enrollmentRegex = /^(0704|0714)(CS|IT|AD)(20|21|22|23|24|25|26)(1[0-2][0-9]{2}|1300)$/;
 
@@ -24,6 +28,7 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // <-- New state
 
   const validate = () => {
     const newErrors = {};
@@ -56,6 +61,10 @@ export default function Login() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword((show) => !show);
   };
 
   return (
@@ -135,7 +144,7 @@ export default function Login() {
           <TextField
             label="Password"
             name="password"
-            type="password"
+            type={showPassword ? 'text' : 'password'} // <-- toggling type
             value={form.password}
             onChange={handleChange}
             fullWidth
@@ -144,6 +153,19 @@ export default function Login() {
             error={!!errors.password}
             helperText={errors.password}
             inputProps={{ minLength: 6 }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    onClick={toggleShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
 
           <Button

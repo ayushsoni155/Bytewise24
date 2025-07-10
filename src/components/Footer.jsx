@@ -23,8 +23,8 @@ export default function Footer() {
     <Box
       component="footer"
       sx={{
-        backgroundColor: theme.palette.background.paper,
-        color: theme.palette.text.primary,
+        backgroundColor: '#121212', // Always dark background
+        color: '#ffffff', // Light text color
         mt: 'auto',
         width: '100%',
       }}
@@ -35,27 +35,29 @@ export default function Footer() {
           px: { xs: 2, sm: 4 },
           py: 4,
           borderRadius: 0,
+          backgroundColor: '#121212', // Match footer color
+          color: '#ffffff',
         }}
       >
         <Container maxWidth="lg">
           <Grid container spacing={4}>
             {/* About */}
             <Grid item xs={12} md={4}>
-              <Typography variant="h6" fontWeight={600} gutterBottom>
+              <Typography variant="h6" fontWeight={600} gutterBottom sx={{ color: '#ffffff' }}>
                 <SchoolIcon
                   fontSize="small"
                   sx={{ mr: 1, color: theme.palette.primary.main }}
                 />
                 ByteWise
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" sx={{ color: '#cccccc' }}>
                 One-stop platform for engineering students. Get notes, lab manuals, curated videos, and certified tech courses — all in one place.
               </Typography>
             </Grid>
 
             {/* Quick Links */}
             <Grid item xs={6} md={4}>
-              <Typography variant="h6" fontWeight={600} gutterBottom>
+              <Typography variant="h6" fontWeight={600} gutterBottom sx={{ color: '#ffffff' }}>
                 Quick Links
               </Typography>
               <Box>
@@ -68,30 +70,30 @@ export default function Footer() {
 
             {/* Social Links */}
             <Grid item xs={6} md={4}>
-              <Typography variant="h6" fontWeight={600} gutterBottom>
+              <Typography variant="h6" fontWeight={600} gutterBottom sx={{ color: '#ffffff' }}>
                 Connect With Us
               </Typography>
               <Box>
-                <IconButton href="https://github.com/ayushsoni155" target="_blank" color="inherit">
+                <IconButton href="https://github.com/ayushsoni155" target="_blank" sx={{ color: '#ffffff' }}>
                   <GitHubIcon />
                 </IconButton>
-                <IconButton href="https://ayushsoni.vercel.app" target="_blank" color="inherit">
+                <IconButton href="https://ayushsoni.vercel.app" target="_blank" sx={{ color: '#ffffff' }}>
                   <LanguageIcon />
                 </IconButton>
-                <IconButton href="https://instagram.com/ayushsoni.155" target="_blank" color="inherit">
+                <IconButton href="https://instagram.com/ayushsoni.155" target="_blank" sx={{ color: '#ffffff' }}>
                   <InstagramIcon />
                 </IconButton>
-                <IconButton href="mailto:ayushsoni.gcsb@gmail.com" color="inherit">
+                <IconButton href="mailto:ayushsoni.gcsb@gmail.com" sx={{ color: '#ffffff' }}>
                   <EmailIcon />
                 </IconButton>
               </Box>
             </Grid>
           </Grid>
 
-          <Divider sx={{ my: 3 }} />
+          <Divider sx={{ my: 3, backgroundColor: '#444' }} />
 
-          <Typography variant="body2" align="center" color="text.secondary">
-            © {new Date().getFullYear()} ByteWise | Developed by Ayush Soni | v1.0.0
+          <Typography variant="body2" align="center" sx={{ color: '#bbbbbb' }}>
+            © {new Date().getFullYear()} ByteWise | Developed by Ayush Soni | v2.0.0
           </Typography>
         </Container>
       </Paper>
@@ -99,10 +101,11 @@ export default function Footer() {
   );
 }
 
-// Simple inline style for Link component
+// Updated link style for dark footer
 const linkStyle = {
   display: 'block',
   marginBottom: 8,
   textDecoration: 'none',
-  color: 'inherit',
+  color: '#cccccc',
+  fontSize: '0.95rem',
 };

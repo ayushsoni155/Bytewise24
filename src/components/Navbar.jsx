@@ -12,7 +12,6 @@ import {
   Box,
   useMediaQuery,
   useTheme,
-  Paper,
   Divider,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -22,7 +21,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ThemeToggleButton from './ThemeToggleButton';
 import ProfilePopup from './ProfilePopup';
-import { useAuth } from '../context/AuthContext'; 
+import { useAuth } from '../context/AuthContext';
 
 const navItems = [
   { label: 'Home', path: '/' },
@@ -45,9 +44,7 @@ export default function Navbar({ cartCount = 0 }) {
   const hoverColor = isDark ? '#333' : '#f0f0f0';
   const textColor = isDark ? '#ffffff' : '#000000';
 
-  const toggleDrawer = (open) => () => {
-    setDrawerOpen(open);
-  };
+  const toggleDrawer = (open) => () => setDrawerOpen(open);
 
   const drawerContent = (
     <Box
@@ -81,30 +78,14 @@ export default function Navbar({ cartCount = 0 }) {
             sx={{
               borderRadius: 2,
               mb: 1,
-              '&:hover': {
-                backgroundColor: hoverColor,
-              },
+              '&:hover': { backgroundColor: hoverColor },
             }}
           >
             <ListItemText primary={item.label} />
           </ListItemButton>
         ))}
 
-        {isLoggedIn ? (
-          <ListItemButton
-            component={Link}
-            to="/profile"
-            sx={{
-              borderRadius: 2,
-              mb: 1,
-              '&:hover': {
-                backgroundColor: hoverColor,
-              },
-            }}
-          >
-            <ListItemText primary="Profile" />
-          </ListItemButton>
-        ) : (
+        {!isLoggedIn && (
           <>
             <ListItemButton
               component={Link}
@@ -112,22 +93,17 @@ export default function Navbar({ cartCount = 0 }) {
               sx={{
                 borderRadius: 2,
                 mb: 1,
-                '&:hover': {
-                  backgroundColor: hoverColor,
-                },
+                '&:hover': { backgroundColor: hoverColor },
               }}
             >
               <ListItemText primary="Login" />
             </ListItemButton>
-
             <ListItemButton
               component={Link}
               to="/signup"
               sx={{
                 borderRadius: 2,
-                '&:hover': {
-                  backgroundColor: hoverColor,
-                },
+                '&:hover': { backgroundColor: hoverColor },
               }}
             >
               <ListItemText primary="Signup" />
@@ -140,133 +116,127 @@ export default function Navbar({ cartCount = 0 }) {
 
   return (
     <>
-      <Paper elevation={3} sx={{ borderRadius: 3, m: 1, overflow: 'hidden' }}>
-        <AppBar
-          position="fixed"
-          sx={{
-            borderRadius: 3,
-            px: 1,
-            background: bgColor,
-            color: textColor,
-            transition: 'all 0.3s ease-in-out',
-            boxShadow: isDark ? '0 0 10px #111' : '0 0 10px #ccc',
-          }}
-        >
-          <Toolbar sx={{ justifyContent: 'space-between', py: 1 }}>
-            {/* Left */}
-            <Box display="flex" alignItems="center" gap={2}>
-              {isMobile && (
-                <IconButton edge="start" onClick={toggleDrawer(true)} sx={{ color: 'inherit' }}>
-                  <MenuIcon />
-                </IconButton>
+      <AppBar
+        position="fixed"
+        elevation={3}
+        sx={{
+          background: bgColor,
+          color: textColor,
+          px: { xs: 1, sm: 2 },
+          py: 0.5,
+          boxShadow: isDark ? '0 0 10px #111' : '0 0 10px #ccc',
+        }}
+      >
+        <Toolbar sx={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
+          {/* Left Section */}
+          <Box display="flex" alignItems="center" gap={2}>
+            {isMobile && (
+              <IconButton edge="start" onClick={toggleDrawer(true)} sx={{ color: 'inherit' }}>
+                <MenuIcon />
+              </IconButton>
+            )}
+            <Box>
+              <Typography
+                variant="h5"
+                component={Link}
+                to="/"
+                sx={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                  fontWeight: 600,
+                  fontFamily: 'Poppins, sans-serif',
+                }}
+              >
+                ByteWise
+              </Typography>
+              {!isMobile && (
+                <Typography variant="caption" sx={{ fontStyle: 'italic', color: 'gray' }}>
+                  Tool kit for engineering success
+                </Typography>
               )}
-              <Box>
-                <Typography
-                  variant="h5"
+            </Box>
+          </Box>
+
+          {/* Center Nav Links (Desktop only) */}
+          {!isMobile && (
+            <Box display="flex" gap={2} alignItems="center">
+              {navItems.map((item) => (
+                <Button
+                  key={item.label}
                   component={Link}
-                  to="/"
+                  to={item.path}
                   sx={{
-                    textDecoration: 'none',
                     color: 'inherit',
-                    fontWeight: 600,
-                    fontFamily: 'Poppins, sans-serif',
+                    fontWeight: 500,
+                    borderRadius: '12px',
+                    transition: '0.3s',
+                    '&:hover': {
+                      backgroundColor: hoverColor,
+                      transform: 'scale(1.05)',
+                    },
                   }}
                 >
-                  ByteWise
-                </Typography>
-                {!isMobile && (
-                  <Typography variant="caption" sx={{ fontStyle: 'italic', color: 'gray' }}>
-                    Tool kit for engineering success
-                  </Typography>
-                )}
-              </Box>
-            </Box>
-
-            {/* Center Links */}
-            {!isMobile && (
-              <Box display="flex" gap={2}>
-                {navItems.map((item) => (
-                  <Button
-                    key={item.label}
-                    component={Link}
-                    to={item.path}
-                    sx={{
-                      color: 'inherit',
-                      fontWeight: 500,
-                      borderRadius: '12px',
-                      transition: '0.3s',
-                      '&:hover': {
-                        backgroundColor: hoverColor,
-                        transform: 'scale(1.05)',
-                      },
-                    }}
-                  >
-                    {item.label}
-                  </Button>
-                ))}
-              </Box>
-            )}
-
-            {/* Right */}
-            <Box display="flex" alignItems="center" gap={2}>
-              <ThemeToggleButton />
-
-              {isLoggedIn ? (
-                <Button
-                  onClick={() => setShowProfile(!showProfile)}
-                  startIcon={<AccountCircleIcon />}
-                  sx={{ color: 'inherit', fontWeight: 500 }}
-                >
-                  Profile
+                  {item.label}
                 </Button>
-              ) : (
-                !isMobile && (
-                  <>
-                    <Button component={Link} to="/login" color="inherit" sx={{ fontWeight: 500 }}>
-                      Login
-                    </Button>
-                    <Button
-                      component={Link}
-                      to="/signup"
-                      variant="outlined"
-                      sx={{
-                        borderColor: textColor,
-                        color: 'inherit',
-                        fontWeight: 500,
-                        '&:hover': {
-                          backgroundColor: hoverColor,
-                        },
-                      }}
-                    >
-                      Signup
-                    </Button>
-                  </>
-                )
-              )}
-
-              <IconButton component={Link} to="/cart" sx={{ color: 'inherit' }}>
-                <Badge badgeContent={cartCount} color="error">
-                  <ShoppingCartIcon />
-                </Badge>
-              </IconButton>
-            </Box>
-          </Toolbar>
-
-          {showProfile && (
-            <Box
-              sx={{
-                position: 'absolute',
-                top: '70px',
-                right: '30px',
-                zIndex: 1500,
-              }}
-            >
-              <ProfilePopup onClose={() => setShowProfile(false)} />
+              ))}
             </Box>
           )}
-        </AppBar>
-      </Paper>
 
+          {/* Right Section */}
+          <Box display="flex" alignItems="center" gap={1.5}>
+            <ThemeToggleButton />
+
+            {isLoggedIn && (
+              <IconButton onClick={() => setShowProfile(!showProfile)} sx={{ color: 'inherit' }}>
+                <AccountCircleIcon />
+              </IconButton>
+            )}
+
+            {!isLoggedIn && !isMobile && (
+              <>
+                <Button component={Link} to="/login" color="inherit" sx={{ fontWeight: 500 }}>
+                  Login
+                </Button>
+                <Button
+                  component={Link}
+                  to="/signup"
+                  variant="outlined"
+                  sx={{
+                    borderColor: textColor,
+                    color: 'inherit',
+                    fontWeight: 500,
+                    '&:hover': { backgroundColor: hoverColor },
+                  }}
+                >
+                  Signup
+                </Button>
+              </>
+            )}
+
+            <IconButton component={Link} to="/cart" sx={{ color: 'inherit' }}>
+              <Badge badgeContent={cartCount} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
+          </Box>
+        </Toolbar>
+
+        {/* Profile Popup */}
+        {showProfile && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '70px',
+              right: '30px',
+              zIndex: 1500,
+            }}
+          >
+            <ProfilePopup onClose={() => setShowProfile(false)} />
+          </Box>
+        )}
+      </AppBar>
+
+      {/* Drawer */}
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
         {drawerContent}
       </Drawer>

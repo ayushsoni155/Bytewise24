@@ -11,8 +11,10 @@ import Cart from './pages/Cart';
 import { useCart } from './context/CartContext';
 import Courses from './pages/Courses';
 import Footer from './components/Footer';
+import Error404Page from './pages/Error404Page';
 import './App.css';
 import ForgotPassword from './pages/ForgotPassword';
+import LandingPage from './pages/LandingPage';
 
 function App() {
   const { getCartCount } = useCart();
@@ -39,6 +41,8 @@ function App() {
       {/* Main Content */}
       <Box flexGrow={1}>
         <Routes>
+          
+          <Route path="/" element={<LandingPage/>} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
@@ -47,6 +51,8 @@ function App() {
           <Route path="/lab-manuals" element={<LabManuals />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="*" element={<Error404Page/>} />
+
         </Routes>
       </Box>
 

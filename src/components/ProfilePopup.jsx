@@ -62,6 +62,7 @@ export default function ProfilePopup({ onClose }) {
 
     try {
       const res = await axios.put('/user/change-password', {
+        enrollment:user.enrollment,
         security_answer: securityAnswer.trim(),
         new_password: newPassword.trim(),
       });
