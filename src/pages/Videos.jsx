@@ -92,18 +92,18 @@ export default function Videos() {
         <Grid container spacing={3} justifyContent="center">
           {loading
             ? Array.from({ length: 8 }).map((_, index) => (
-                <Grid item xs={6} sm={6} md={3} key={index} display="flex" justifyContent="center">
-                  <Card
-                    sx={{
-                      width: { xs: '100%', sm: 260, md: 280 },
-                      height: { xs: 'auto', md: 360 },
-                      borderRadius: 3,
-                      boxShadow: 3,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      p: 1,
-                    }}
-                  >
+                 <Grid item xs={12} sm={6} md={3} key={index} display="flex" justifyContent="center">
+                                <Card
+                                  sx={{
+                                    width: { xs: 260, sm: 260, md: 280 },
+                                    height: { xs: 'auto', md: 360 },
+                                    borderRadius: 3,
+                                    boxShadow: 3,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    p: 1,
+                                  }}
+                                >
                     <Skeleton variant="rectangular" height={140} sx={{ borderRadius: 2 }} />
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Skeleton width="80%" height={28} sx={{ mb: 1 }} />

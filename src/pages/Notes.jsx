@@ -91,10 +91,10 @@ export default function Notes() {
         <Grid container spacing={3} justifyContent="center">
           {loading ? (
             Array.from({ length: 8 }).map((_, index) => (
-              <Grid item xs={6} sm={6} md={3} key={index} display="flex" justifyContent="center">
+              <Grid item xs={12} sm={6} md={3} key={index} display="flex" justifyContent="center">
                 <Card
                   sx={{
-                    width: { xs: '100%', sm: 260, md: 280 },
+                    width: { xs: 260, sm: 260, md: 280 },
                     height: { xs: 'auto', md: 360 },
                     borderRadius: 3,
                     boxShadow: 3,
@@ -120,7 +120,7 @@ export default function Notes() {
             </Grid>
           ) : (
             filteredItems.map((note) => (
-              <Grid item xs={6} sm={6} md={3} key={note.notes_id || note.id} display="flex" justifyContent="center">
+              <Grid item xs={12} sm={6} md={3} key={note.notes_id || note.id} display="flex" justifyContent="center">
                 <Tooltip
                   title={
                     <Box>

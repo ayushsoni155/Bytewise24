@@ -28,6 +28,7 @@ export default function LabManuals() {
   const [loading, setLoading] = useState(true);
   const [notify, setNotify] = useState({ open: false, message: '', type: 'info' });
   const [error, setError] = useState(null);
+
   const { addToCart } = useCart();
   const { isLoggedIn } = useAuth();
 
@@ -36,7 +37,7 @@ export default function LabManuals() {
       try {
         setLoading(true);
         const res = await axios.get('/lab-manuals/fetch-labManuals');
-        const visibleManuals = res.data.filter(m => m.visibility_status === 'visible');
+        const visibleManuals = res.data.filter((m) => m.visibility_status === 'visible');
         setManuals(visibleManuals);
         setAllItems(visibleManuals);
         setFilteredItems(visibleManuals);
@@ -46,7 +47,6 @@ export default function LabManuals() {
         setLoading(false);
       }
     };
-
     fetchManuals();
   }, []);
 
@@ -54,17 +54,16 @@ export default function LabManuals() {
     const filtered = allItems.filter((item) => {
       const name = item.subjects?.name?.toLowerCase() || '';
       const code = item.subject_code?.toLowerCase() || '';
-      const matchesSearch = name.includes(search) || code.includes(search);
+      const matchesSearch = name.includes(search.toLowerCase()) || code.includes(search.toLowerCase());
       const matchesSem = sem ? item.subjects?.sem === parseInt(sem) : true;
       return matchesSearch && matchesSem;
     });
     setFilteredItems(filtered);
   };
 
-  const handleAddToCart = async (id) => {
+  const handleAddToCart = async (item) => {
     try {
-      await addToCart(id, 1);
-      setNotify({ open: true, message: 'Added to cart', type: 'success' });
+      await addToCart(item, 1);
     } catch (err) {
       setNotify({ open: true, message: 'Failed to add to cart', type: 'error' });
     }
@@ -85,8 +84,8 @@ export default function LabManuals() {
         sx={{
           p: 2,
           borderRadius: 4,
-          boxShadow: theme => theme.shadows[5],
-          backgroundColor: theme => theme.palette.background.paper,
+          boxShadow: (theme) => theme.shadows[5],
+          backgroundColor: (theme) => theme.palette.background.paper,
         }}
       >
         <Typography variant="h4" gutterBottom fontWeight={600} align="center">
@@ -102,12 +101,12 @@ export default function LabManuals() {
         <FilterBar onFilter={handleFilter} />
 
         <Grid container spacing={3} justifyContent="center">
-          {loading
-            ? Array.from({ length: 8 }).map((_, index) => (
-              <Grid item xs={6} sm={6} md={3} key={index} display="flex" justifyContent="center">
+          {loading ? (
+            Array.from({ length: 8 }).map((_, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index} display="flex" justifyContent="center">
                 <Card
                   sx={{
-                    width: { xs: '100%', sm: 260, md: 280 },
+                    width: { xs: 260, sm: 260, md: 280 },
                     height: { xs: 'auto', md: 360 },
                     borderRadius: 3,
                     boxShadow: 3,
@@ -125,38 +124,24 @@ export default function LabManuals() {
                 </Card>
               </Grid>
             ))
-            : filteredItems.length === 0 ? (
-              <Grid item xs={12}>
-                <Typography variant="h6" align="center">
-                  No lab manuals available.
-                </Typography>
-              </Grid>
-            ) : (
-              filteredItems.map((manual) => (
-                <Grid
-                  item
-                  xs={6}
-                  sm={6}
-                  md={3}
-                  key={manual.lab_manual_id}
-                  display="flex"
-                  justifyContent="center"
-                >
+          ) : filteredItems.length === 0 ? (
+            <Grid item xs={12}>
+              <Typography variant="h6" align="center">
+                No lab manuals available.
+              </Typography>
+            </Grid>
+          ) : (
+            filteredItems.map((manual) => {
+              const subject = manual.subjects || {};
+              return (
+                <Grid item xs={12} sm={6} md={3} key={manual.lab_manual_id} display="flex" justifyContent="center">
                   <Tooltip
                     title={
                       <>
-                        <Typography fontSize={13}>
-                          <b>Subject:</b> {manual.subjects.name}
-                        </Typography>
-                        <Typography fontSize={13}>
-                          <b>Subject Code:</b> {manual.subject_code}
-                        </Typography>
-                        <Typography fontSize={13}>
-                          <b>Semester:</b> {manual.subjects.sem}
-                        </Typography>
-                        <Typography fontSize={13}>
-                          <b>Branch:</b> {manual.subjects.branch}
-                        </Typography>
+                        <Typography fontSize={13}><b>Subject:</b> {subject.name || 'N/A'}</Typography>
+                        <Typography fontSize={13}><b>Code:</b> {manual.subject_code}</Typography>
+                        <Typography fontSize={13}><b>Semester:</b> {subject.sem || '-'}</Typography>
+                        <Typography fontSize={13}><b>Branch:</b> {subject.branch || '-'}</Typography>
                       </>
                     }
                     arrow
@@ -179,8 +164,8 @@ export default function LabManuals() {
                       <CardMedia
                         component="img"
                         height="140"
-                        image={manual.manual_image}
-                        alt={manual.subjects.name}
+                        image={manual.manual_image || '/placeholder.jpg'}
+                        alt={subject.name || 'Manual'}
                         sx={{ objectFit: 'cover' }}
                       />
                       <CardContent
@@ -191,7 +176,7 @@ export default function LabManuals() {
                         }}
                       >
                         <Typography variant="h6" fontWeight={600} noWrap>
-                          {manual.subjects.name}
+                          {subject.name || 'Manual'}
                         </Typography>
 
                         <Typography
@@ -223,7 +208,7 @@ export default function LabManuals() {
                           variant="outlined"
                           size="small"
                           startIcon={<AddShoppingCartIcon />}
-                          onClick={() => handleAddToCart(manual.lab_manual_id)}
+                          onClick={() => handleAddToCart(manual)}
                           sx={{ mt: 1, alignSelf: 'flex-start' }}
                         >
                           Add to Cart
@@ -232,8 +217,9 @@ export default function LabManuals() {
                     </Card>
                   </Tooltip>
                 </Grid>
-              ))
-            )}
+              );
+            })
+          )}
         </Grid>
       </Paper>
 

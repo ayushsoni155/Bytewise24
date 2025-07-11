@@ -46,7 +46,7 @@ export default function LandingPage() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Box sx={{ mt: { xs: 8, md: 10 } }}>
+    <Box sx={{ mt: { xs: 9, md: 10 } }}>
       {/* Hero Section */}
       <Box
         sx={{
