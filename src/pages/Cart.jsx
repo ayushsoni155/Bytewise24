@@ -92,10 +92,14 @@ const handleRemove = (item) => {
       }}
     >
       <Container
-        maxWidth={false}
-        disableGutters
-        sx={{ mt: 10, mb: 6, px: { xs: 2, sm: 4, md: 8 } }}
-      >
+      maxWidth={false}
+      disableGutters
+      sx={{
+        mt: { xs: 9, sm: 10, md: 12 },
+        mb: { xs: 4, sm: 6 },
+        px: { xs: 1, sm: 2, md: 4, lg: 4 },
+      }}
+    >
         <Paper
           elevation={4}
           sx={{
