@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
+import PaymentIcon from "@mui/icons-material/Payment";
 import { loadRazorpay } from "../utils/loadRazorpay";
 import axios from "../services/axios";
 import { useCart } from "../context/CartContext";
@@ -16,7 +17,11 @@ export default function RazorpayButton({ amount }) {
     type: "info",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handlePayment = async () => {
+    setLoading(true);
+
     const res = await loadRazorpay();
     if (!res) {
       setNotify({
@@ -24,6 +29,7 @@ export default function RazorpayButton({ amount }) {
         message: "Razorpay SDK failed to load.",
         type: "error",
       });
+      setLoading(false);
       return;
     }
 
@@ -70,7 +76,7 @@ export default function RazorpayButton({ amount }) {
           } else {
             setNotify({
               open: true,
-              message: "Payment verification failed.",
+              message: " Payment verification failed.",
               type: "error",
             });
           }
@@ -83,6 +89,16 @@ export default function RazorpayButton({ amount }) {
         theme: {
           color: "#2E7D32",
         },
+        modal: {
+          ondismiss: () => {
+            setLoading(false);
+            setNotify({
+              open: true,
+              message: "Payment cancelled by user.",
+              type: "info",
+            });
+          },
+        },
       };
 
       const rzp = new window.Razorpay(options);
@@ -94,14 +110,27 @@ export default function RazorpayButton({ amount }) {
         message: "Something went wrong. Please try again.",
         type: "error",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
-      <Button onClick={handlePayment} variant="contained" color="primary">
-        Pay ₹{amount}
+      <Button
+        onClick={handlePayment}
+        variant="contained"
+        color="success"
+        startIcon={!loading && <PaymentIcon />}
+        disabled={loading}
+        sx={{
+          fontWeight: "bold",
+          textTransform: "none",
+        }}
+      >
+        {loading ? <CircularProgress size={24} sx={{ color: "#fff" }} /> : `Pay ₹${amount}`}
       </Button>
+
       <Notification
         open={notify.open}
         message={notify.message}

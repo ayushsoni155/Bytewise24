@@ -1,19 +1,28 @@
 // src/contexts/ThemeContext.jsx
-import { createContext, useMemo, useState, useContext } from 'react';
+import { createContext, useMemo, useState, useContext, useEffect } from 'react';
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
 const ThemeContext = createContext();
 
+// Custom hook to access theme context
 // eslint-disable-next-line react-refresh/only-export-components
 export const useThemeContext = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
-  const [mode, setMode] = useState('light');
+  const [mode, setMode] = useState(() => {
+    // Load initial mode from localStorage, fallback to light
+    return localStorage.getItem('appTheme') || 'light';
+  });
 
   const toggleTheme = () => {
-    setMode(prev => (prev === 'light' ? 'dark' : 'light'));
+    setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
+
+  // Save mode to localStorage on change
+  useEffect(() => {
+    localStorage.setItem('appTheme', mode);
+  }, [mode]);
 
   const theme = useMemo(
     () =>
@@ -35,8 +44,8 @@ export const ThemeProvider = ({ children }) => {
               }),
         },
         typography: {
-  fontFamily: 'Poppins, sans-serif',
-},
+          fontFamily: 'Poppins, sans-serif',
+        },
       }),
     [mode]
   );

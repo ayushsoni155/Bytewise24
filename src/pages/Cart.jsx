@@ -15,6 +15,7 @@ import {
 import { Add, Remove, Delete } from '@mui/icons-material';
 import { useCart } from '../context/CartContext';
 import RazorpayButton from '../components/RazorpayButton';
+import { Link } from 'react-router-dom'; 
 
 export default function Cart() {
   const {
@@ -115,11 +116,20 @@ export default function Cart() {
             {Array.from({ length: 4 }).map((_, index) => renderSkeletonCard(index))}
           </Grid>
         ) : cartItems.length === 0 ? (
-          <Box flexGrow={1} display="flex" alignItems="center" justifyContent="center">
-            <Typography variant="h6" align="center">
-              Your cart is empty.
-            </Typography>
-          </Box>
+  <Box flexGrow={1} display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+    <Typography variant="h6" align="center" gutterBottom>
+      Your cart is empty.
+    </Typography>
+    <Button
+      component={Link}
+      to="/orders"
+      variant="outlined"
+      size="small"
+      sx={{ mt: 1 }}
+    >
+      View My Orders
+    </Button>
+  </Box>
         ) : (
           <>
             <Grid container spacing={3} justifyContent="center">

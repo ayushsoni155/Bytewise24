@@ -8,12 +8,12 @@ export default function Notification({ open, message, type = 'success', onClose 
       open={open}
       autoHideDuration={2000}
       onClose={onClose}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{vertical: 'top', horizontal: 'center' }}
     >
       <Alert
         onClose={onClose}
         severity={type}
-        variant="filled"
+        // variant="filled"
         sx={{ width: '100%' }}
       >
         {message}
