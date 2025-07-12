@@ -124,6 +124,8 @@ const addToCart = (item, quantityDelta = 1) => {
 // Remove function now receives entire item, not just id
 const removeFromCart = (item) => {
   if (!item) return;
+  console.log(item);
+  
   const updated = cartItems.filter(
     (i) => i.lab_manual_id !== item.lab_manual_id && i.cart_id !== item.cart_id
   );
@@ -194,6 +196,7 @@ const removeFromCart = (item) => {
     <CartContext.Provider
       value={{
         cartItems,
+        loadCart,
         addToCart,
         removeFromCart,
         clearCart,

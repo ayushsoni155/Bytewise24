@@ -22,6 +22,7 @@ import { Link } from 'react-router-dom';
 import ThemeToggleButton from './ThemeToggleButton';
 import ProfilePopup from './ProfilePopup';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 
 const navItems = [
   { label: 'Home', path: '/' },
@@ -36,7 +37,7 @@ export default function Navbar({ cartCount = 0 }) {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
-
+  const {loadCart} = useCart();
   const { isLoggedIn } = useAuth();
 
   const isDark = theme.palette.mode === 'dark';
@@ -213,11 +214,12 @@ export default function Navbar({ cartCount = 0 }) {
               </>
             )}
 
-            <IconButton component={Link} to="/cart" sx={{ color: 'inherit' }}>
-              <Badge badgeContent={cartCount} color="error">
-                <ShoppingCartIcon />
-              </Badge>
-            </IconButton>
+           <IconButton onClick={loadCart} component={Link} to="/cart" sx={{ color: 'inherit' }}>
+  <Badge badgeContent={cartCount} color="error">
+    <ShoppingCartIcon />
+  </Badge>
+</IconButton>
+
           </Box>
         </Toolbar>
 

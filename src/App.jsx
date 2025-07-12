@@ -15,6 +15,7 @@ import Error404Page from './pages/Error404Page';
 import './App.css';
 import ForgotPassword from './pages/ForgotPassword';
 import LandingPage from './pages/LandingPage';
+import Orders from './pages/Orders';
 
 function App() {
   const { getCartCount } = useCart();
@@ -51,6 +52,8 @@ function App() {
           <Route path="/lab-manuals" element={<LabManuals />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/courses" element={<Courses />} />
+          <Route path="/orders" element={<Orders/>} />
+
           <Route path="*" element={<Error404Page/>} />
 
         </Routes>
