@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Container,
@@ -8,6 +8,7 @@ import {
   Divider,
   useTheme,
   Paper,
+  Link as MuiLink,
 } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -16,15 +17,22 @@ import EmailIcon from '@mui/icons-material/Email';
 import SchoolIcon from '@mui/icons-material/School';
 import { Link } from 'react-router-dom';
 
+import TermsAndConditionsModal from './TermsAndConditionsModal'; // Import your modal component
+import PrivacyPolicyModal from './PrivacyPolicyModal';           // Import your modal component
+
 export default function Footer() {
   const theme = useTheme();
+
+  // State to control modals
+  const [openTerms, setOpenTerms] = useState(false);
+  const [openPrivacy, setOpenPrivacy] = useState(false);
 
   return (
     <Box
       component="footer"
       sx={{
-        backgroundColor: '#121212', // Always dark background
-        color: '#ffffff', // Light text color
+        backgroundColor: '#121212',
+        color: '#ffffff',
         mt: 'auto',
         width: '100%',
       }}
@@ -35,7 +43,7 @@ export default function Footer() {
           px: { xs: 2, sm: 4 },
           py: 4,
           borderRadius: 0,
-          backgroundColor: '#121212', // Match footer color
+          backgroundColor: '#121212',
           color: '#ffffff',
         }}
       >
@@ -65,6 +73,21 @@ export default function Footer() {
                 <Link to="/lab-manuals" style={linkStyle}>Lab Manuals</Link>
                 <Link to="/videos" style={linkStyle}>Video Lectures</Link>
                 <Link to="/courses" style={linkStyle}>Free Courses</Link>
+                {/* Add Terms & Privacy triggers here */}
+                <Typography
+                  component="span"
+                  onClick={() => setOpenTerms(true)}
+                  sx={{ ...tpStyle }}
+                >
+                  Terms & Conditions
+                </Typography>
+                <Typography
+                  component="span"
+                  onClick={() => setOpenPrivacy(true)}
+                  sx={{ ...tpStyle }}
+                >
+                  Privacy Policy
+                </Typography>
               </Box>
             </Grid>
 
@@ -97,6 +120,8 @@ export default function Footer() {
           </Typography>
         </Container>
       </Paper>
+      <TermsAndConditionsModal open={openTerms} onClose={() => setOpenTerms(false)} />
+      <PrivacyPolicyModal  open={openPrivacy} onClose={() => setOpenPrivacy(false)} />
     </Box>
   );
 }
@@ -107,5 +132,14 @@ const linkStyle = {
   marginBottom: 8,
   textDecoration: 'none',
   color: '#cccccc',
-  fontSize: '0.95rem',
+  fontSize: '1rem',
 };
+
+const tpStyle={
+  display: 'block',
+  marginBottom: 1,
+  textDecoration: 'none',
+  fontSize: '1rem',
+  cursor: 'pointer',
+   color: '#90caf9'
+}
